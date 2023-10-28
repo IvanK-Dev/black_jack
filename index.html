@@ -1,0 +1,68 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/2.0.0/modern-normalize.min.css" integrity="sha512-4xo8blKMVCiXpTaLzQSLSw3KFOVPWhm/TRtuPVc4WG6kUgjH6J03IBuG7JZPkcWMxJ5huwaBpOpnwYElP/m6wg==" crossorigin="anonymous" referrerpolicy="no-referrer" />    <link rel="stylesheet" type="text/css" href="./src/css/styles.css">
+    <title>Blackjack</title>
+</head>
+
+<body>
+    <div id="game">
+        <h1>Blackjack</h1>
+        <div id="players-area">
+
+            <!-- <div id="player1-area" class="area">
+                <h2>Игрок 1</h2>
+                <div id="player1-hand" class="hand"></div>
+                <p id="player1-score" class="score"></p>
+            </div>
+
+            <div id="player2-area" class="area">
+                <h2>Игрок 2</h2>
+                <div id="player2-hand" class="hand"></div>
+                <p id="player2-score" class="score"></p>
+            </div>
+
+            <div id="player3-area" class="area">
+                <h2>Игрок 3</h2>
+                <div id="player3-hand" class="hand"></div>
+                <p id="player3-score" class="score"></p>
+            </div>
+
+            <div id="player4-area" class="area">
+                <h2>Игрок 4</h2>
+                <div id="player4-hand" class="hand"></div>
+                <p id="player4-score" class="score"></p>
+            </div> -->
+
+        </div>
+
+        <div id="dealer-area" class="area">
+            <h2>Дилер</h2>
+            <div id="dealer-hand" class="hand"></div>
+            <p id="dealer-score" class="score"></p>
+        </div>
+
+        <div id="game-controls">
+            <button id="startButton">Начать игру</button>
+            <button id="hitButton">Взять</button>
+            <button id="standButton">Пропустить</button>
+        </div>
+
+        <div id="status">Выберите количество игроков и нажмите "Начать игру".</div>
+        <div id="player-count">
+            <label for="playerSelect">Количество игроков: </label>
+            <select id="playerSelect">
+                <option value="1">1 игрок</option>
+                <option value="2">2 игрока</option>
+                <option value="3">3 игрока</option>
+                <option value="4">4 игрока </option>
+            </select>
+        </div>
+    </div>
+
+
+
+    <script type='module' src="./src/js/main.js"></script>
+</body>
+
+</html>
