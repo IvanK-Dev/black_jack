@@ -1,5 +1,3 @@
-import { handCards,addButtons } from './helpers/helpers.js';
-
 /**
  * Класс Player представляет игрока в игре Blackjack.
  */
@@ -11,54 +9,92 @@ export default class Player {
     this.hand = [];
     this.score = 0;
     this.isDealer = false;
+    this.isBotPlayer = false;
+    this.stopped = false;
   }
 
   createPlayerElement = () => {
     const playerElement = document.createElement('div');
-    playerElement.id = `player${this.id}-area`;
+    playerElement.id =`player-${this.id}-area`;
     playerElement.classList = 'area';
     const title = document.createElement('h2');
-    title.textContent = `Игрок ${this.id}`;
+    title.textContent =`Игрок ${this.id}`;
 
     const handElement = document.createElement('div');
-    handElement.id = `player${this.id}-hand`;
+    handElement.id =`player-${this.id}-hand`;
     handElement.classList = 'hand';
 
     const scoreElement = document.createElement('p');
-    scoreElement.id = `player${this.id}-score`;
+    scoreElement.id=`player-${this.id}-score`;
     scoreElement.classList = 'score';
 
-    const buttonsListElement=addButtons(this.id)
+    playerElement.append(title);
+    playerElement.append(handElement);
+    playerElement.append(scoreElement);
 
+    if (!this.isDealer && !this.isBotPlayer) {
+      const buttonsListElement = this.buttonsElement(this.id);
+      playerElement.append(buttonsListElement);
+    }
 
-
-    playerElement.append(title)
-    playerElement.append(handElement)
-    playerElement.append(scoreElement)
-    playerElement.append(buttonsListElement)
-
-    return playerElement
+    return playerElement;
   };
+
+  handCardsElement = (cards) => {
+    const list = document.createElement('ul');
+
+    cards.forEach((card) => {
+      const listItem = document.createElement('li');
+      listItem.textContent = card;
+      list.append(listItem);
+    });
+    return list;
+  };
+
+  buttonsElement = (playerId) => {
+    const buttonsInfo = [
+      { text: 'Взять', id: `player-${playerId}-hitButton` },
+      { text: 'Стоп', id: `player-${playerId}-stopButton` },
+    ];
+
+    const type = 'button';
+
+    const buttonList = document.createElement('ul');
+    buttonList.classList = 'player-button-list';
+
+    buttonsInfo.forEach(({ text, id }) => {
+      const button = document.createElement('button');
+      button.type = type;
+      button.textContent = text;
+      button.id = id;
+      button.disabled = true;
+
+      const listItem = document.createElement('li');
+      listItem.append(button);
+      buttonList.append(listItem);
+    });
+
+    return buttonList;
+  };
+
+  setStopped = () => (this.stopped = true);
 
   /**
    * Метод раздачи карты игроку.
    * @param {string[]} deck - Колода карт.
    * @returns {string} - Возвращает последнюю карту из колоды.
    */
-  dealCard=(deck)=> {
-    return deck.pop();
-  }
+  dealCard = (deck) => deck.pop();
 
   /**
    * Метод вычисления очков на руке игрока.
    * @param {string[]} hand - Рука игрока.
    * @returns {number} - Возвращает сумму очков на руке.
    */
-  calculateHand=(hand)=> {
+  calculateHand = () => {
     let score = 0;
     let hasAce = false;
-
-    for (let card of hand) {
+    for (let card of this.hand) {
       const value = card.split(' ')[0];
       switch (value) {
         case 'Ace':
@@ -80,30 +116,20 @@ export default class Player {
       score -= 10;
     }
 
-    return score;
-  }
+    this.score = score;
+  };
+
+  fillHandAndScore = (handEl, scoreEl) => {
+    handEl.innerHTML = this.handCardsElement(this.hand).outerHTML;
+    scoreEl.textContent = 'Очки: ' + this.score;
+  };
 
   updatePlayerUI = () => {
-    const handElement = document.getElementById(`player${this.id}-hand`);
-    const scoreElement = document.getElementById(`player${this.id}-score`);
-    const handDealerElement = document.getElementById(`dealer-hand`);
-    const scoreDealerElement = document.getElementById(`dealer-score`);
+    const handElement = document.getElementById(`player-${this.id}-hand`);
+    const scoreElement = document.getElementById(`player-${this.id}-score`);
 
-    const cardsList = handCards(this.hand);
-
-    const fillHandAndScore = (handEl, scoreEl) => {
-      handEl.appendChild(cardsList);
-      scoreEl.textContent = 'Очки: ' + this.score;
-    };
-
-    if (this.isDealer === true) {
-      if (handDealerElement && scoreDealerElement) {
-        fillHandAndScore(handDealerElement, scoreDealerElement);
-      }
-    } else {
-      if (handElement && scoreElement) {
-        fillHandAndScore(handElement, scoreElement);
-      }
+    if (handElement && scoreElement) {
+      this.fillHandAndScore(handElement, scoreElement);
     }
   };
 }

@@ -1,6 +1,13 @@
 import Player from './Player.js';
 import { suits } from './assets/suits.js';
 import { cardValues } from './assets/cardValues.js';
+import { waitUntilPlayerStops } from './helpers/waitUntilPlayerStops.js';
+import { playerGenerator } from './helpers/playerGenerator.js';
+import { waitUntilPlayerBust } from './helpers/waitUntilPlayerBust.js';
+import { buttonsDisableToggle } from './helpers/buttonsDisableToggle.js';
+import { dealerOrBotDrawCards } from './helpers/dealerOrBotDrawCards.js';
+import BotPlayer from './BotPlayer.js';
+import Dealer from './Dealer.js';
 
 /**
  * Класс BlackjackGame управляет ходом игры Blackjack.
@@ -67,7 +74,6 @@ export default class BlackjackGame {
 
     this.isDone = false;
 
-    console.log('this.playerCount', this.playerCount);
     this.status.textContent = 'Игра началась.';
 
     const dealAndCalculateScore = (playersArray) => {
@@ -76,157 +82,78 @@ export default class BlackjackGame {
           participant.dealCard(this.deck),
           participant.dealCard(this.deck),
         ];
-        participant.score = participant.calculateHand(participant.hand);
+        participant.calculateHand();
       }
     };
 
-    for (let i = 0; i < this.playerCount; i++) {
-      const player = new Player();
+    for (let i = 0; i < 4; i++) {
+      const player = i < this.playerCount ? new Player() : new BotPlayer();
       this.players.push(player);
-      playersAreaElement.appendChild(player.createPlayerElement())
-
+      playersAreaElement.appendChild(player.createPlayerElement());
     }
 
-    const dealer = new Player();
-    dealer.isDealer = true;
+    const dealer = new Dealer();
     this.players.push(dealer);
+
+    playersAreaElement.insertAdjacentElement(
+      'afterend',
+      dealer.createPlayerElement()
+    );
 
     console.log('players', this.players);
 
     dealAndCalculateScore(this.players);
+
+    this.updateUI();
   }
+
+  gameBody = async () => {
+    const generator = playerGenerator(this.players);
+    for (const player of generator) {
+      const playerElement = document.getElementById(
+        player.isDealer ? 'dealer-area' : `player-${player.id}-area`
+      );
+      const playerButtons = playerElement.querySelectorAll(
+        `.player-button-list button`
+      );
+      //const playerScoreElement = playerElement.querySelector('[id*="score"]');
+
+      if (player instanceof Dealer || player instanceof BotPlayer) {
+        dealerOrBotDrawCards(player, this.deck);
+        player.stopped = true;
+      }
+
+      if (player.score > 21) {
+        player.stopped = true;
+      }
+      if (!(player instanceof Dealer || player instanceof BotPlayer)) {
+        buttonsDisableToggle(playerButtons);
+      }
+
+      waitUntilPlayerBust(player);
+      await waitUntilPlayerStops(player);
+
+      if (!(player instanceof Dealer || player instanceof BotPlayer)) {
+        buttonsDisableToggle(playerButtons);
+      }
+      player.updatePlayerUI();
+    }
+
+    console.log('The End Game');
+  };
 
   /**
    * Выдает карту из колоды.
    * @returns {string} - Последняя карта из колоды.
    */
-  dealCard() {
-    return this.deck.pop();
-  }
+  dealCard = () => this.deck.pop();
 
   /**
    * Обновляет пользовательский интерфейс.
    */
   updateUI() {
-    console.log('updateUI');
-    for (let i = 0; i <= this.playerCount; i++) {
-      console.log('let i', i);
-      console.log('this.players[i]', this.players[i]);
+    for (let i = 0; i < this.players.length; i++) {
       this.players[i].updatePlayerUI();
-    }
-  }
-}
-
-class some {
-  calculateHand(hand) {
-    let score = 0;
-    let hasAce = false;
-
-    for (let card of hand) {
-      const value = card.split(' ')[0];
-      if (value === 'Ace') {
-        hasAce = true;
-        score += 11;
-      } else if (['King', 'Queen', 'Jack'].includes(value)) {
-        score += 10;
-      } else {
-        score += parseInt(value, 10);
-      }
-    }
-
-    if (hasAce && score > 21) {
-      score -= 10;
-    }
-
-    return score;
-  }
-
-  /**
-   * Выдает карту игроку.
-   */
-  playerHit() {
-    if (this.isPlayer && !this.isDone) {
-      this.hands[0].push(this.dealCard());
-      this.scores[0] = this.calculateHand(this.hands[0]);
-      this.updateUI();
-
-      if (this.scores[0] > 21) {
-        this.isDone = true;
-        this.endGame(false);
-      }
-    }
-  }
-
-  /**
-   * Завершает ход игрока.
-   */
-  endPlayerTurn() {
-    if (!this.isDone) {
-      this.isPlayer = false;
-      this.dealerTurn();
-    }
-  }
-
-  /**
-   * Ход дилера.
-   */
-  dealerTurn() {
-    if (!this.isPlayer && !this.isDone) {
-      for (let i = 1; i < this.playerCount; i++) {
-        while (this.scores[i] < 17) {
-          this.hands[i].push(this.dealCard());
-          this.scores[i] = this.calculateHand(this.hands[i]);
-        }
-      }
-
-      this.isDone = true;
-      this.updateUI();
-
-      let playerWin = false;
-      if (this.scores[0] > 21) {
-        playerWin = false;
-      } else {
-        for (let i = 1; i < this.playerCount; i++) {
-          if (
-            this.scores[i] <= 21 &&
-            (this.scores[i] > this.scores[0] || this.scores[0] > 21)
-          ) {
-            playerWin = false;
-          }
-        }
-      }
-
-      this.endGame(playerWin);
-    }
-  }
-
-  /**
-   * Завершает игру и объявляет результат.
-   * @param {boolean} playerWins - Определяет, выиграл ли игрок.
-   */
-  endGame(playerWins) {
-    this.isDone = true;
-    if (playerWins) {
-      this.status.textContent = 'Вы выиграли!';
-    } else {
-      this.status.textContent = 'Дилер выиграл.';
-    }
-  }
-
-  /**
-   * Обновляет пользовательский интерфейс.
-   */
-  updateUI() {
-    for (let i = 0; i < this.playerCount; i++) {
-      const handElement = document.getElementById(`player${i + 1}-hand`);
-      const scoreElement = document.getElementById(`player${i + 1}-score`);
-
-      if (handElement && scoreElement) {
-        handElement.innerHTML = this.hands[i]
-          .map((card) => `<span>${card}</span>`)
-          .join('');
-        scoreElement.textContent = 'Очки: ' + this.scores[i];
-      }
     }
   }
 }
