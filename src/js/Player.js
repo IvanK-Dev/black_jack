@@ -8,34 +8,30 @@ export default class Player {
     this.id = Player.#id;
     this.hand = [];
     this.score = 0;
-    this.isDealer = false;
-    this.isBotPlayer = false;
     this.stopped = false;
   }
 
   createPlayerElement = () => {
     const playerElement = document.createElement('div');
-    playerElement.id =`player-${this.id}-area`;
+    playerElement.id = `player-${this.id}-area`;
     playerElement.classList = 'area';
     const title = document.createElement('h2');
-    title.textContent =`Игрок ${this.id}`;
+    title.textContent = `Игрок ${this.id}`;
 
     const handElement = document.createElement('div');
-    handElement.id =`player-${this.id}-hand`;
+    handElement.id = `player-${this.id}-hand`;
     handElement.classList = 'hand';
 
     const scoreElement = document.createElement('p');
-    scoreElement.id=`player-${this.id}-score`;
+    scoreElement.id = `player-${this.id}-score`;
     scoreElement.classList = 'score';
 
     playerElement.append(title);
     playerElement.append(handElement);
     playerElement.append(scoreElement);
 
-    if (!this.isDealer && !this.isBotPlayer) {
-      const buttonsListElement = this.buttonsElement(this.id);
-      playerElement.append(buttonsListElement);
-    }
+    const buttonsListElement = this.buttonsElement(this.id);
+    playerElement.append(buttonsListElement);
 
     return playerElement;
   };

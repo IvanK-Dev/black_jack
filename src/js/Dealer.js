@@ -3,7 +3,6 @@ import Player from './Player.js';
 export default class Dealer extends Player {
   constructor() {
     super();
-    this.isDealer = true;
   }
 
   createPlayerElement = () => {
@@ -24,11 +23,6 @@ export default class Dealer extends Player {
     dealerElement.append(title);
     dealerElement.append(handElement);
     dealerElement.append(scoreElement);
-
-    if (!this.isDealer && !this.isBotPlayer) {
-      const buttonsListElement = this.buttonsElement(this.id);
-      dealerElement.append(buttonsListElement);
-    }
 
     return dealerElement;
   };

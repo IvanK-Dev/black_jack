@@ -111,7 +111,7 @@ export default class BlackjackGame {
     const generator = playerGenerator(this.players);
     for (const player of generator) {
       const playerElement = document.getElementById(
-        player.isDealer ? 'dealer-area' : `player-${player.id}-area`
+        player instanceof Dealer ? 'dealer-area' : `player-${player.id}-area`
       );
       const playerButtons = playerElement.querySelectorAll(
         `.player-button-list button`
