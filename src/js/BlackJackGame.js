@@ -8,6 +8,7 @@ import { buttonsDisableToggle } from './helpers/buttonsDisableToggle.js';
 import { dealerOrBotDrawCards } from './helpers/dealerOrBotDrawCards.js';
 import BotPlayer from './BotPlayer.js';
 import Dealer from './Dealer.js';
+import { delay } from './helpers/delay.js';
 
 /**
  * Класс BlackjackGame управляет ходом игры Blackjack.
@@ -107,6 +108,11 @@ export default class BlackjackGame {
     this.updateUI();
   }
 
+  /**
+   * Основной процесс игры.
+   * Проходит по игрокам и управляет ходом игры, включая раздачу карт, проверку их значений и обновление интерфейса.
+   * @returns {Promise<void>} Промис, который завершается по окончании игры.
+   */
   gameBody = async () => {
     const generator = playerGenerator(this.players);
     for (const player of generator) {
@@ -116,7 +122,7 @@ export default class BlackjackGame {
       const playerButtons = playerElement.querySelectorAll(
         `.player-button-list button`
       );
-      //const playerScoreElement = playerElement.querySelector('[id*="score"]');
+      const playerScoreElement = playerElement.querySelector('[id*="score"]');
 
       if (player instanceof Dealer || player instanceof BotPlayer) {
         dealerOrBotDrawCards(player, this.deck);
@@ -129,13 +135,17 @@ export default class BlackjackGame {
       if (!(player instanceof Dealer || player instanceof BotPlayer)) {
         buttonsDisableToggle(playerButtons);
       }
-
       waitUntilPlayerBust(player);
       await waitUntilPlayerStops(player);
+
+      if (player instanceof Dealer) {
+        playerScoreElement.style.visibility = 'visible';
+      }
 
       if (!(player instanceof Dealer || player instanceof BotPlayer)) {
         buttonsDisableToggle(playerButtons);
       }
+      await delay(1000);
       player.updatePlayerUI();
     }
 

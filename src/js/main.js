@@ -1,15 +1,25 @@
 import BlackjackGame from './BlackJackGame.js';
-import {waitUntilPlayerStops} from './helpers/waitUntilPlayerStops.js'
+
+/**
+ * @typedef {Object} PlayerObject - Объект игрока.
+ * @property {string} id - Идентификатор игрока.
+ * @property {string[]} hand - Рука игрока.
+ * @property {Function} calculateHand - Функция для вычисления значения руки игрока.
+ * @property {Function} setStopped - Функция для установки остановки игрока.
+ */
 
 const playerSelectElement = document.getElementById('playerSelect');
 const startButtonElement = document.getElementById('startButton');
 const playersAreaElement = document.getElementById('players-area');
-// const startAnotherButton= document.getElementById('startAnotherButton')
-
-// startAnotherButton.disabled=true
-
+/**
+ * Игровое поле для блэкджека.
+ * @type {BlackjackGame | null}
+ */
 let game = null;
-
+/**
+ * Выбранное количество игроков.
+ * @type {number}
+ */
 let selectedValue = 0;
 
 playerSelectElement.addEventListener('change', () => {

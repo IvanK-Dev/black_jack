@@ -20,9 +20,12 @@ export default class Dealer extends Player {
     scoreElement.id = 'dealer-score';
     scoreElement.classList = 'score';
 
+    scoreElement.style.visibility='hidden'
+
     dealerElement.append(title);
     dealerElement.append(handElement);
     dealerElement.append(scoreElement);
+
 
     return dealerElement;
   };

@@ -11,6 +11,10 @@ export default class Player {
     this.stopped = false;
   }
 
+  /**
+   * Создает элемент для отображения игрока.
+   * @returns {HTMLElement} - Элемент, представляющий игрока.
+   */
   createPlayerElement = () => {
     const playerElement = document.createElement('div');
     playerElement.id = `player-${this.id}-area`;
@@ -36,6 +40,11 @@ export default class Player {
     return playerElement;
   };
 
+  /**
+   * Создает элемент списка карт на руке игрока.
+   * @param {string[]} cards - Массив карт в руке игрока.
+   * @returns {HTMLUListElement} - Элемент списка ul с картами игрока.
+   */
   handCardsElement = (cards) => {
     const list = document.createElement('ul');
 
@@ -47,6 +56,11 @@ export default class Player {
     return list;
   };
 
+  /**
+   * Создает элемент списка кнопок для игрока.
+   * @param {number} playerId - Идентификатор игрока.
+   * @returns {HTMLUListElement} - Элемент списка ul с кнопками для игрока.
+   */
   buttonsElement = (playerId) => {
     const buttonsInfo = [
       { text: 'Взять', id: `player-${playerId}-hitButton` },
@@ -73,6 +87,9 @@ export default class Player {
     return buttonList;
   };
 
+  /**
+   * Устанавливает флаг остановки игрока.
+   */
   setStopped = () => (this.stopped = true);
 
   /**
@@ -84,8 +101,6 @@ export default class Player {
 
   /**
    * Метод вычисления очков на руке игрока.
-   * @param {string[]} hand - Рука игрока.
-   * @returns {number} - Возвращает сумму очков на руке.
    */
   calculateHand = () => {
     let score = 0;
@@ -120,6 +135,9 @@ export default class Player {
     scoreEl.textContent = 'Очки: ' + this.score;
   };
 
+  /**
+   * Обновляет пользовательский интерфейс игрока.
+   */
   updatePlayerUI = () => {
     const handElement = document.getElementById(`player-${this.id}-hand`);
     const scoreElement = document.getElementById(`player-${this.id}-score`);
