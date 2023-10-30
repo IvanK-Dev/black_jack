@@ -23,8 +23,8 @@ export default class BlackjackGame {
     this.deck = [];
     /** @type {Player[]} players - Массив игроков */
     this.players = [];
-    /** @type {boolean} isDone - Флаг окончания игры */
-    this.isDone = false;
+    /** @type {boolean} endGame - Флаг окончания игры */
+    this.endGame = false;
     /** @type {number} playerCount - Количество игроков */
     this.playerCount = playerCount;
 
@@ -46,7 +46,7 @@ export default class BlackjackGame {
   createDeck() {
     for (let suit of this.suits) {
       for (let value of this.values) {
-        this.deck.push(`${value} of ${suit}`);
+        this.deck.push(`${value}_of_${suit}`);
       }
     }
   }
@@ -67,13 +67,12 @@ export default class BlackjackGame {
    */
   startGame() {
     this.deck = [];
-    this.players = [];
     this.createDeck();
     this.shuffleDeck();
 
     const playersAreaElement = document.getElementById('players-area');
 
-    this.isDone = false;
+    this.endGame = false;
 
     this.status.textContent = 'Игра началась.';
 
@@ -86,22 +85,21 @@ export default class BlackjackGame {
         participant.calculateHand();
       }
     };
+    if (this.players.length === 0) {
+      for (let i = 0; i < 4; i++) {
+        const player = i < this.playerCount ? new Player() : new BotPlayer();
+        this.players.push(player);
+        playersAreaElement.appendChild(player.createPlayerElement());
+      }
 
-    for (let i = 0; i < 4; i++) {
-      const player = i < this.playerCount ? new Player() : new BotPlayer();
-      this.players.push(player);
-      playersAreaElement.appendChild(player.createPlayerElement());
+      const dealer = new Dealer();
+      this.players.push(dealer);
+
+      playersAreaElement.insertAdjacentElement(
+        'afterend',
+        dealer.createPlayerElement()
+      );
     }
-
-    const dealer = new Dealer();
-    this.players.push(dealer);
-
-    playersAreaElement.insertAdjacentElement(
-      'afterend',
-      dealer.createPlayerElement()
-    );
-
-    console.log('players', this.players);
 
     dealAndCalculateScore(this.players);
 
@@ -149,7 +147,18 @@ export default class BlackjackGame {
       player.updatePlayerUI();
     }
 
-    console.log('The End Game');
+    
+
+    this.endGame = true;
+  };
+
+  resetGame = () => {
+    this.players.forEach((player) => {
+      player.hand = [];
+      player.score = 0;
+      player.stopped = false;
+
+    });
   };
 
   /**

@@ -20,7 +20,7 @@ let game = null;
  * Выбранное количество игроков.
  * @type {number}
  */
-let selectedValue = 0;
+let selectedValue = 1;
 
 playerSelectElement.addEventListener('change', () => {
   selectedValue = parseInt(playerSelectElement.value);
@@ -30,9 +30,11 @@ playerSelectElement.addEventListener('change', () => {
 
 startButtonElement.addEventListener('click', () => {
   if (!game) {
-    game = new BlackjackGame(selectedValue || 1);
+    game = new BlackjackGame(selectedValue);
+  }else{
+    game.resetGame()
   }
-  startButtonElement.disabled = true;
+  startButtonElement.textContent = 'Сброс игры';
   game.startGame();
   game.gameBody();
 });

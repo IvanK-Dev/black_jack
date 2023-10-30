@@ -1,62 +1,67 @@
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
 }
 
 .area {
-    width: 300px;
-    padding: 10px;
-    border: 2px solid #333;
-    border-radius: 10px;
-    text-align: center;
-    background-color: #f0f0f0;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    margin: 5px;
+  width: 300px;
+  padding: 10px;
+  border: 2px solid #333;
+  border-radius: 10px;
+  text-align: center;
+  background-color: #f0f0f0;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  margin: 5px;
 }
 
 .hand {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .score {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .player-button-list {
-    list-style: none; 
-    padding: 0;
-    display: flex; 
-    justify-content: center;
-    gap: 10px;
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
-
-.player-button-list {
-}
-
 
 #game-controls {
-    text-align: center;
+  text-align: center;
 }
 
 button {
-    margin: 5px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
+  margin: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 #status {
-    text-align: center;
-    font-size: 18px;
-    margin: 10px;
+  text-align: center;
+  font-size: 18px;
+  margin: 10px;
 }
 
 #player-count {
-    margin: 10px;
+  margin: 10px;
+}
+
+
+.cards__list{
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }

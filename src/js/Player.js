@@ -47,10 +47,15 @@ export default class Player {
    */
   handCardsElement = (cards) => {
     const list = document.createElement('ul');
+    list.classList='cards__list'
 
     cards.forEach((card) => {
       const listItem = document.createElement('li');
-      listItem.textContent = card;
+      const cardEl=  `<div class="card-box">
+      <svg class="card__image">
+        <use href="src/img/deck/deck.svg#${card}"></use>
+      </svg>`                      
+      listItem.innerHTML=cardEl;
       list.append(listItem);
     });
     return list;
@@ -106,7 +111,7 @@ export default class Player {
     let score = 0;
     let hasAce = false;
     for (let card of this.hand) {
-      const value = card.split(' ')[0];
+      const value = card.split('_')[0];
       switch (value) {
         case 'Ace':
           hasAce = true;
