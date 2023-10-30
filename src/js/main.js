@@ -56,5 +56,4 @@ playersAreaElement.addEventListener('click', (evt) => {
       playerObj.setStopped();
       break;
   }
-  game.updateUI();
 });
