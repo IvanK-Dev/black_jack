@@ -18,7 +18,7 @@ export default class Player {
   createPlayerElement = () => {
     const playerElement = document.createElement('div');
     playerElement.id = `player-${this.id}-area`;
-    playerElement.classList = 'area';
+    playerElement.classList = 'player-area area';
     const title = document.createElement('h2');
     title.textContent = `Игрок ${this.id}`;
 

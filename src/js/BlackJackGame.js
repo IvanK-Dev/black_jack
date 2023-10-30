@@ -96,7 +96,7 @@ export default class BlackjackGame {
       this.players.push(dealer);
 
       playersAreaElement.insertAdjacentElement(
-        'afterend',
+        'beforebegin',
         dealer.createPlayerElement()
       );
     }
@@ -104,6 +104,10 @@ export default class BlackjackGame {
     dealAndCalculateScore(this.players);
 
     this.updateUI();
+
+    document
+      .getElementById('dealer-hand')
+      .querySelectorAll('svg')[1].innerHTML='<use href="src/img/deck/deck.svg#Red_Back"></use>'
   }
 
   /**
@@ -147,8 +151,6 @@ export default class BlackjackGame {
       player.updatePlayerUI();
     }
 
-    
-
     this.endGame = true;
   };
 
@@ -157,7 +159,6 @@ export default class BlackjackGame {
       player.hand = [];
       player.score = 0;
       player.stopped = false;
-
     });
   };
 

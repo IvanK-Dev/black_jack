@@ -9,7 +9,7 @@ export default class BotPlayer extends Player {
   createPlayerElement = () => {
     const botPlayerElement = document.createElement('div');
     botPlayerElement.id = `player-${this.id}-area`;
-    botPlayerElement.classList = 'area';
+    botPlayerElement.classList = 'player-area area';
     const title = document.createElement('h2');
     title.textContent = `Игрок ${this.id}`;
 

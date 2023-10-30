@@ -8,7 +8,6 @@ body {
 }
 
 .area {
-  width: 300px;
   padding: 10px;
   border: 2px solid #333;
   border-radius: 10px;
@@ -17,6 +16,15 @@ body {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   margin: 5px;
 }
+
+svg {
+  margin: auto;
+  display: block;
+  width: 100px;
+  height: 150px;
+}
+
+
 
 .hand {
   display: flex;
@@ -57,11 +65,21 @@ button {
   margin: 10px;
 }
 
-
-.cards__list{
+.cards__list {
   list-style: none;
+  height: 100px;
   padding: 0;
   display: flex;
   justify-content: center;
   gap: 10px;
+}
+
+#players-area{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.player-area{
+  width: 45%
 }
