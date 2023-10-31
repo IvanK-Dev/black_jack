@@ -67,11 +67,9 @@ button {
 
 .cards__list {
   list-style: none;
-  height: 100px;
   padding: 0;
   display: flex;
   justify-content: center;
-  gap: 10px;
 }
 
 #players-area{
@@ -81,5 +79,5 @@ button {
 }
 
 .player-area{
-  width: 45%
+  min-width: 45%
 }

@@ -107,7 +107,7 @@ export default class BlackjackGame {
 
     document
       .getElementById('dealer-hand')
-      .querySelectorAll('svg')[1].innerHTML='<use href="src/img/deck/deck.svg#Red_Back"></use>'
+      .querySelectorAll('svg')[1].innerHTML='<use href="src/img/deck/deck.svg#Back"></use>'
   }
 
   /**
@@ -147,7 +147,7 @@ export default class BlackjackGame {
       if (!(player instanceof Dealer || player instanceof BotPlayer)) {
         buttonsDisableToggle(playerButtons);
       }
-      await delay(1000);
+      await delay(500);
       player.updatePlayerUI();
     }
 

@@ -51,6 +51,7 @@ playersAreaElement.addEventListener('click', (evt) => {
     case `player-${playerId}-hitButton`:
       playerObj.hand.push(game.dealCard());
       playerObj.calculateHand();
+      playerObj.updatePlayerUI()
       break;
     case `player-${playerId}-stopButton`:
       playerObj.setStopped();
