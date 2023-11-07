@@ -1,4 +1,4 @@
-export const cardValues=[
+export const CARD_VALUES=[
     "2",
     "3",
     "4",
@@ -8,8 +8,8 @@ export const cardValues=[
     "8",
     "9",
     "10",
-    "Jack",
-    "Queen",
-    "King",
-    "Ace"
+    "J",
+    "Q",
+    "K",
+    "A"
   ]

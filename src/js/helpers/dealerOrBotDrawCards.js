@@ -1,4 +1,4 @@
-import { delay } from "./delay.js";
+import { delay } from './delay.js';
 
 /**
  * Функция для определения вероятности взятия карты дилером на основе оставшихся очков до 21.
@@ -30,10 +30,10 @@ export const dealerOrBotDrawCards = async (player, deck) => {
       (dealerPoints < 21 && Math.random() < calculateProbability(dealerPoints))
     ) {
       const newCard = player.dealCard(deck);
-      await delay(1000)
+      await delay(1000);
       player.hand.push(newCard); // Добавляем новую карту в руку дилера или бота.
-      player.calculateHand()
-      player.updatePlayerUI()
+      player.calculateHand();
+      player.updatePlayerUI();
     } else {
       break;
     }

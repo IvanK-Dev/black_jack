@@ -1,3 +1,5 @@
+import { createCardElement } from './helpers/createCardElement.js';
+
 /**
  * Класс Player представляет игрока в игре Blackjack.
  */
@@ -18,17 +20,17 @@ export default class Player {
   createPlayerElement = () => {
     const playerElement = document.createElement('div');
     playerElement.id = `player-${this.id}-area`;
-    playerElement.classList = 'player-area area';
+    playerElement.className = 'player-area area';
     const title = document.createElement('h2');
     title.textContent = `Игрок ${this.id}`;
 
     const handElement = document.createElement('div');
     handElement.id = `player-${this.id}-hand`;
-    handElement.classList = 'hand';
+    handElement.className = 'hand';
 
     const scoreElement = document.createElement('p');
     scoreElement.id = `player-${this.id}-score`;
-    scoreElement.classList = 'score';
+    scoreElement.className = 'score';
 
     playerElement.append(title);
     playerElement.append(handElement);
@@ -47,15 +49,11 @@ export default class Player {
    */
   handCardsElement = (cards) => {
     const list = document.createElement('ul');
-    list.classList='cards__list'
+    list.classList = 'cards__list';
 
     cards.forEach((card) => {
       const listItem = document.createElement('li');
-      const cardEl=  `<div class="card-box">
-      <svg class="card__image">
-        <use href="src/img/deck/deck.svg#${card}"></use>
-      </svg>`                      
-      listItem.innerHTML=cardEl;
+      listItem.append(createCardElement(card));
       list.append(listItem);
     });
     return list;
@@ -111,15 +109,15 @@ export default class Player {
     let score = 0;
     let hasAce = false;
     for (let card of this.hand) {
-      const value = card.split('_')[0];
+      const value = card.split('_')[1];
       switch (value) {
-        case 'Ace':
+        case 'A':
           hasAce = true;
           score += 11;
           break;
-        case 'King':
-        case 'Queen':
-        case 'Jack':
+        case 'K':
+        case 'Q':
+        case 'J':
           score += 10;
           break;
         default:

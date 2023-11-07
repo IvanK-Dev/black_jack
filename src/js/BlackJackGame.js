@@ -1,6 +1,4 @@
 import Player from './Player.js';
-import { suits } from './assets/suits.js';
-import { cardValues } from './assets/cardValues.js';
 import { waitUntilPlayerStops } from './helpers/waitUntilPlayerStops.js';
 import { playerGenerator } from './helpers/playerGenerator.js';
 import { waitUntilPlayerBust } from './helpers/waitUntilPlayerBust.js';
@@ -9,6 +7,8 @@ import { dealerOrBotDrawCards } from './helpers/dealerOrBotDrawCards.js';
 import BotPlayer from './BotPlayer.js';
 import Dealer from './Dealer.js';
 import { delay } from './helpers/delay.js';
+import { CARD_SUITS } from '../constants/cardSuits.js';
+import { CARD_VALUES } from '../constants/cardValues.js';
 
 /**
  * Класс BlackjackGame управляет ходом игры Blackjack.
@@ -27,12 +27,6 @@ export default class BlackjackGame {
     this.endGame = false;
     /** @type {number} playerCount - Количество игроков */
     this.playerCount = playerCount;
-
-    /** @type {string[]} suits - Масти карт  «Червы», «Бубны», «Трёфы», «Пики»*/
-    this.suits = suits;
-    /** @type {string[]} values - Значения карт */
-    this.values = cardValues;
-
     /** @type {HTMLElement} handElement - Элемент для отображения руки */
     this.handElement = null;
     /** @type {HTMLElement} scoreElement - Элемент для отображения очков */
@@ -44,9 +38,9 @@ export default class BlackjackGame {
    * Создает колоду карт.
    */
   createDeck() {
-    for (let suit of this.suits) {
-      for (let value of this.values) {
-        this.deck.push(`${value}_of_${suit}`);
+    for (let suit of CARD_SUITS) {
+      for (let value of CARD_VALUES) {
+        this.deck.push(`${suit}_${value}`);
       }
     }
   }
@@ -61,7 +55,7 @@ export default class BlackjackGame {
   }
 
   /**
-   * Устанавливает элементы для отображения руки и очков игрока.
+   * Устанавливает элементы для отображения руки и очков игрока, запускает игру.
    * @param {string} handElementId - ID элемента для руки.
    * @param {string} scoreElementId - ID элемента для очков.
    */
@@ -73,8 +67,6 @@ export default class BlackjackGame {
     const playersAreaElement = document.getElementById('players-area');
 
     this.endGame = false;
-
-    this.status.textContent = 'Игра началась.';
 
     const dealAndCalculateScore = (playersArray) => {
       for (const participant of playersArray) {
@@ -107,7 +99,8 @@ export default class BlackjackGame {
 
     document
       .getElementById('dealer-hand')
-      .querySelectorAll('svg')[1].innerHTML='<use href="src/img/deck/deck.svg#Back"></use>'
+      .querySelectorAll('svg')[1].innerHTML =
+      '<use href="src/img/deck/deck.svg#Back"></use>';
   }
 
   /**
@@ -154,6 +147,9 @@ export default class BlackjackGame {
     this.endGame = true;
   };
 
+  /**
+   * Сбрасывает игру к начальному состоянию.
+   */
   resetGame = () => {
     this.players.forEach((player) => {
       player.hand = [];

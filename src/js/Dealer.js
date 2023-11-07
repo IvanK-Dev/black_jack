@@ -5,27 +5,30 @@ export default class Dealer extends Player {
     super();
   }
 
+  /**
+   * Создает HTML-элемент дилера.
+   * @returns {HTMLElement} - Элемент дилера.
+   */
   createPlayerElement = () => {
     const dealerElement = document.createElement('div');
     dealerElement.id = 'dealer-area';
-    dealerElement.classList = 'area';
+    dealerElement.className = 'area';
     const title = document.createElement('h2');
     title.textContent = 'Дилер';
 
     const handElement = document.createElement('div');
     handElement.id = 'dealer-hand';
-    handElement.classList = 'hand';
+    handElement.className = 'hand';
 
     const scoreElement = document.createElement('p');
     scoreElement.id = 'dealer-score';
-    scoreElement.classList = 'score';
+    scoreElement.className = 'score';
 
-    scoreElement.style.visibility='hidden'
+    scoreElement.style.visibility = 'hidden';
 
     dealerElement.append(title);
     dealerElement.append(handElement);
     dealerElement.append(scoreElement);
-
 
     return dealerElement;
   };
