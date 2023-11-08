@@ -109,7 +109,10 @@ export default class BlackjackGame {
    * @returns {Promise<void>} Промис, который завершается по окончании игры.
    */
   gameBody = async () => {
+    // Генерация игроков в порядке хода
     const generator = playerGenerator(this.players);
+  
+    // Обработка каждого игрока в порядке хода
     for (const player of generator) {
       const playerElement = document.getElementById(
         player instanceof Dealer ? 'dealer-area' : `player-${player.id}-area`
@@ -118,33 +121,46 @@ export default class BlackjackGame {
         `.player-button-list button`
       );
       const playerScoreElement = playerElement.querySelector('[id*="score"]');
-
+  
+      // Дилер или бот берут карты и останавливаются
       if (player instanceof Dealer || player instanceof BotPlayer) {
         dealerOrBotDrawCards(player, this.deck);
         player.stopped = true;
       }
-
+  
+      // Проверка на выход за пределы суммы 21 очка
       if (player.score > 21) {
         player.stopped = true;
       }
+  
+      // Если игрок не дилер и не бот, отключаем кнопки
       if (!(player instanceof Dealer || player instanceof BotPlayer)) {
         buttonsDisableToggle(playerButtons);
       }
+  //Ожидание, пока у игрока будет перебор
       waitUntilPlayerBust(player);
+      // Ожидание, пока игрок не выберет "остановить"
       await waitUntilPlayerStops(player);
-
+  
+      // Показать счет дилера
       if (player instanceof Dealer) {
         playerScoreElement.style.visibility = 'visible';
       }
-
+  
+      // Опять отключаем кнопки для всех, кроме дилера и бота
       if (!(player instanceof Dealer || player instanceof BotPlayer)) {
         buttonsDisableToggle(playerButtons);
       }
+  
+      // Задержка перед обновлением интерфейса игрока
       await delay(500);
       player.updatePlayerUI();
     }
-
+  
+    // Установка флага окончания игры
     this.endGame = true;
+
+    console.log('this.endGame',this.endGame)
   };
 
   /**

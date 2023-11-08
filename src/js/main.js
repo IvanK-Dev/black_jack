@@ -1,6 +1,8 @@
 import BlackjackGame from './BlackJackGame.js';
 import ModalWindow from './ModalWindow.js';
 import { createPlayerSelectorElement } from './helpers/createPlayerSelectorElement.js';
+import { showWinnersElement } from './helpers/showWinnersElement.js';
+import { waitForEndGame } from './helpers/waitForEndGame.js';
 
 // const startButtonElement = document.getElementById('startButton');
 const playersAreaElement = document.getElementById('players-area');
@@ -16,9 +18,9 @@ modal.openModal(createPlayerSelectorElement(), 'Начать игру', () =>
   handleGameStart()
 );
 
-
-//Получаем ссылки на элементы DOM.
+//Получаем ссылки на элемент DOM.
 const playerSelectElement = document.getElementById('playerSelect');
+
 /**
  * Выбранное количество игроков.
  * @type {number}
@@ -33,8 +35,12 @@ playerSelectElement.addEventListener('change', () => {
   selectedValue = selectedValue < 1 ? 1 : selectedValue;
 });
 
+/**
+ * Функция для начала игры в блэкджек.
+ * @param {number} selectedValue - Выбранное количество игроков.
+ * @returns {void}
+ */
 function handleGameStart() {
-  {
     if (!game) {
       game = new BlackjackGame(selectedValue);
     } else {
@@ -42,7 +48,7 @@ function handleGameStart() {
     }
     game.startGame();
     game.gameBody();
-  }
+    waitForEndGameAndShowModal()
 }
 
 // Слушатель события клика в области игрока.
@@ -66,4 +72,9 @@ playersAreaElement.addEventListener('click', (evt) => {
   }
 });
 
-
+async function waitForEndGameAndShowModal() {
+  await waitForEndGame(game);
+  modal.openModal(showWinnersElement(game), 'Играть еще', () => {
+    handleGameStart();
+  });
+}

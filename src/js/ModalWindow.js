@@ -32,13 +32,11 @@ export default class ModalWindow {
   };
 
   openModal = (beforeButtonElement, buttonText, buttonFunction) => {
-    if (!this.modal) {
       this.buttonText = buttonText;
       this.buttonFunction = buttonFunction;
       this.beforeButtonElement=beforeButtonElement
 
       this.createModalElement();
-    }
 
     document.body.appendChild(this.modal);
   };
