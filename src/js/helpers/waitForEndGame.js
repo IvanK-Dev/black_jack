@@ -9,10 +9,7 @@ export function waitForEndGame(game) {
      * Функция проверки окончания игры.
      */
     const checkStopped = () => {
-      console.log('waitForEndGame начало игры', game);
-
       if (game && game.endGame) {
-        console.log('waitForEndGame');
         resolve(true);
       } else {
         setTimeout(checkStopped, 1000); // Проверка каждую секунду (1000 миллисекунд)
